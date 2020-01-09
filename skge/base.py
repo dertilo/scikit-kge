@@ -1,6 +1,8 @@
 import numpy as np
 from numpy.random import shuffle
 from collections import defaultdict
+from tqdm import tqdm
+
 from skge.param import Parameter, AdaGrad
 import timeit
 import pickle
@@ -128,9 +130,9 @@ class StochasticTrainer(object):
     def _optim(self, xys):
         idx = np.arange(len(xys))
         self.batch_size = np.ceil(len(xys) / self.nbatches)
-        batch_idx = np.arange(self.batch_size, len(xys), self.batch_size)
+        batch_idx = np.arange(self.batch_size, len(xys), self.batch_size,dtype='int64')
 
-        for self.epoch in range(1, self.max_epochs + 1):
+        for self.epoch in tqdm(range(1, self.max_epochs + 1)):
             # shuffle training examples
             self._pre_epoch()
             shuffle(idx)
